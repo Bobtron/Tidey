@@ -5,17 +5,31 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+<!--    if above is changed to "navigation_map," app stops working-->
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="edu.hacksc.trashyredditapp.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="edu.hacksc.trashyredditapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="edu.hacksc.trashyredditapp.MapFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="edu.hacksc.trashyredditapp.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -23,9 +37,5 @@
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 
-    <fragment
-        android:id="@+id/navigation_map"
-        android:name="edu.hacksc.trashyredditapp.MapFragment"
-        android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
+
 </navigation>
