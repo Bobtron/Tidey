@@ -26,6 +26,12 @@
         tools:layout="@layout/fragment_map" />
 
     <fragment
+        android:id="@+id/navigation_bookmarks"
+        android:name="edu.hacksc.trashyredditapp.ui.bookmarks.BookmarksFragment"
+        android:label="@string/title_bookmarks"
+        tools:layout="@layout/fragment_bookmarks" />
+
+    <fragment
         android:id="@+id/navigation_search"
         android:name="edu.hacksc.trashyredditapp.ui.search.SearchFragment"
         android:label="@string/title_search"
@@ -36,6 +42,12 @@
         android:name="edu.hacksc.trashyredditapp.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="edu.hacksc.trashyredditapp.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
 
 
 </navigation>
