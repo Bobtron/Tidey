@@ -19,13 +19,6 @@
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
-<!--    <fragment-->
-<!--<<<<<<< HEAD-->
-<!--        android:id="@+id/navigation_map"-->
-<!--        android:name="edu.hacksc.trashyredditapp.MapFragment"-->
-<!--        android:label="@string/title_map"-->
-<!--        tools:layout="@layout/fragment_map" />-->
-
     <fragment
         android:id="@+id/navigation_bookmarks"
         android:name="edu.hacksc.trashyredditapp.ui.bookmarks.BookmarksFragment"

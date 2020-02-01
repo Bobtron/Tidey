@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+//import com.google.android.gms.location;
+import com.google.android.gms.maps.model.*;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Marker mMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +46,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                mMap.addMarker(new MarkerOptions().position(point).title("New Marker"));
+                mMarker = mMap.addMarker(new MarkerOptions().position(point).title("New Marker"));
                 Log.i("MARKER", "Created Marker");
-                // marker.setPosition(point);
+//                mMarker.setPosition(point);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
             }
         });
+
+//        @Override
+//        public void onLocationChanged(Location location)
+//        {
+//            if( mListener != null )
+//            {
+//                mListener.onLocationChanged( location );
+//
+//                //Move the camera to the user's location and zoom in!
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
+//            }
+//        }
     }
 }
