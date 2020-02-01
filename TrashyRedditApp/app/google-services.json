@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1094300891042",
+    "firebase_url": "https://trashyreddit-fc90b.firebaseio.com",
+    "project_id": "trashyreddit-fc90b",
+    "storage_bucket": "trashyreddit-fc90b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094300891042:android:d7b71847154199de20a4fb",
+        "android_client_info": {
+          "package_name": "edu.hacksc.trashyredditapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094300891042-2h8p6fqgvs2oh8p60g7anskqvkgl2gip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.hacksc.trashyredditapp",
+            "certificate_hash": "622dcc0e433e1f8f3d6cc35d230e08ab26d1b5d8"
+          }
+        },
+        {
+          "client_id": "1094300891042-4mvsngjfbip8i901o86rge7iucrvrc04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUY1HdTcXoeBmqnRYkaRaFqOpsclnRcPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094300891042-4mvsngjfbip8i901o86rge7iucrvrc04.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
