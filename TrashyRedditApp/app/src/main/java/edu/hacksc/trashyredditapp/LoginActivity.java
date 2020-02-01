@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.i(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Account Creation failed: " +task.getException(),
-                                Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
 
