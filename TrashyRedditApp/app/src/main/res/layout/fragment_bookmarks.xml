@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D2E6C2"
     tools:context=".ui.bookmarks.BookmarksFragment">
 
     <ScrollView
@@ -27,6 +28,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/event4"
                 android:layout_width="375dp"
