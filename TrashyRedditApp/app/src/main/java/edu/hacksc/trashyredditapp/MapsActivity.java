@@ -41,7 +41,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         private GoogleMap mMap;
         private Marker mMarker;
         String user_id;
-
+        Button pickConfirm;
+        Button pickReject;
         private LocationManager locationManager;
 
         SharedPreferences sharedPreferences;
@@ -129,64 +130,94 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
-                editor.putString(point.toString(), user_id);
-                editor.commit();
-
-                Log.i(LoginActivity.TAG, sharedPreferences.getString("USER_ID", "") + " " + point.toString());
-
-                mMarker = mMap.addMarker(new MarkerOptions().position(point).title("New Marker"));
-                Log.i("MARKER", "Created Marker");
 //                mMarker.setPosition(point);
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
-                mMarker = mMap.addMarker(new MarkerOptions().position(point).title("Is this a trash site?"));
-                mMarker.showInfoWindow();
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+                if (mMarker != null && mMarker.getTitle().equals("Is this a trash site?")) {
+                    //User has clicked a part of the map when prompted yes or no buttons to the question
+                    mMarker.remove();
+                    mMarker = null;
+                    pickConfirm.setVisibility(View.INVISIBLE);
+                    pickReject.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    editor.putString(point.toString(), user_id);
+                    editor.commit();
+
+                    Log.i(LoginActivity.TAG, sharedPreferences.getString("USER_ID", "") + " " + point.toString());
+                    Log.i("MARKER", "Created Marker");
+                    mMarker = mMap.addMarker(new MarkerOptions().position(point).title("Is this a trash site?"));
+                    mMarker.showInfoWindow();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+
+                    pickConfirm = findViewById(R.id.confirmTrashSite);
+                    pickReject = findViewById(R.id.rejectTrashSite);
+                    pickConfirm.setVisibility(View.VISIBLE);
+                    pickReject.setVisibility(View.VISIBLE);
+                    pickConfirm.setOnClickListener(new Button.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // TODO Auto-generated method stub
+                            pickConfirm.setVisibility(View.INVISIBLE);
+                            pickReject.setVisibility(View.INVISIBLE);
+                            mMarker.setTitle("Trash Site");
+                            Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    pickReject.setOnClickListener(new Button.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // TODO Auto-generated method stub
+                            pickConfirm.setVisibility(View.INVISIBLE);
+                            pickReject.setVisibility(View.INVISIBLE);
+                            mMarker.remove();
+                            mMarker = null;
+                            Toast.makeText(getApplicationContext(), "Did not create a trash site", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
                 //                mMarker.setPosition(point);
             }
         });
 
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            @Override
-            //Default InfoWindow frame
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
+//        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+//            @Override
+//            //Default InfoWindow frame
+//            public View getInfoWindow(Marker marker) {
+//                return null;
+//            }
+//
+//            @Override
+//            public View getInfoContents(Marker marker) {
+//                final View infoview = getLayoutInflater().inflate(R.layout.activity_maps, null);
+//                LatLng latLng = marker.getPosition();
+//
+//                pickConfirm = infoview.findViewById(R.id.confirmTrashSite);
+//                pickReject = infoview.findViewById(R.id.rejectTrashSite);
+//                pickConfirm.setOnClickListener(new Button.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        // TODO Auto-generated method stub
+//                        Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//                pickReject.setOnClickListener(new Button.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        // TODO Auto-generated method stub
+//                        mMarker.remove();
+//                        Toast.makeText(getApplicationContext(), "Did not create a trash site", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
+//
+//                return infoview;
+//            }
+//        });
 
-            @Override
-            public View getInfoContents(Marker marker) {
-                final View infoview = getLayoutInflater().inflate(R.layout.activity_maps, null);
-                LatLng latLng = marker.getPosition();
 
-                Button pickMe = infoview.findViewById(R.id.confirmTrashSite);
-                pickMe.setOnClickListener(new Button.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        // TODO Auto-generated method stub
-                        Toast.makeText(getApplicationContext(), "Requested Send", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-                return infoview;
-            }
-        });
-
-        //        @Override
-        //        public void onLocationChanged(Location location)
-        //        {
-        //            if( mListener != null )
-        //            {
-        //                mListener.onLocationChanged( location );
-        //
-        //                //Move the camera to the user's location and zoom in!
-        //                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
-        //            }
-        //        }
     }
     @Override
     public void onLocationChanged (Location location){
