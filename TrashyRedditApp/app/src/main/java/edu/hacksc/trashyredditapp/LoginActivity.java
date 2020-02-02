@@ -92,8 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.i(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                            intent.putExtra("email", email_text.toString());
-                            intent.putExtra("password", password_text.toString());
+                            intent.putExtra("email", email_text.getText().toString());
+                            intent.putExtra("password", password_text.getText().toString());
                             intent.putExtra("user_parcel", user);
                             startActivity(intent);
 
@@ -140,8 +140,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        //FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
     }
 
     @Override

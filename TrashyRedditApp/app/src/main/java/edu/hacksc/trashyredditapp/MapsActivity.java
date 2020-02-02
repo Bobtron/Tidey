@@ -36,6 +36,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Map;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, LocationListener {
      //private MapInfoWindowFragment mapInfoWindowFragment;
         private GoogleMap mMap;
@@ -126,12 +128,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
+        Map<String,?> keys = sharedPreferences.getAll();
+
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if(entry.getKey().toString().contains("lat/lng:")) {
+                Log.d("map values", entry.getKey() + ": " +
+                        entry.getValue().toString());
+
+                LatLng latLng = Event.getLatLng(entry.getKey());
+                mMap.addMarker(new MarkerOptions().position(latLng));
+
+            }
+        }
+
 
         mMap.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
 //                mMarker.setPosition(point);
-                if (mMarker != null && mMarker.getTitle().equals("Is this a trash site?")) {
+                if (mMarker != null) {
                     //User has clicked a part of the map when prompted yes or no buttons to the question
                     mMarker.remove();
                     mMarker = null;
@@ -161,7 +176,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             pickConfirm.setVisibility(View.INVISIBLE);
                             pickReject.setVisibility(View.INVISIBLE);
                             mMarker.setTitle("Trash Site");
+                            mMarker.hideInfoWindow();
                             Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
+                            mMarker = null;
                         }
                     });
                     pickReject.setOnClickListener(new Button.OnClickListener() {

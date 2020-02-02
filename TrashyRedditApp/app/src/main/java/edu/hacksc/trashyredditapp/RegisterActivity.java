@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -65,8 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
         editor.commit();
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("first", first_name.toString());
-        intent.putExtra("last", last_name.toString());
+        intent.putExtra("first", first_name_str);
+        intent.putExtra("last", last_name_str);
         //intent.putExtra("database", database);
         intent.putExtra("email", email);
         intent.putExtra("password", password);

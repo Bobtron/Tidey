@@ -27,21 +27,27 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProfileFragment extends Fragment {
 
     String email;
     String password;
+    String first;
+    String last;
     String user_id;
 
     ArrayList<Event> eventArrayList;
+
+    public Profile profileRef;
 
     SharedPreferences sharedPreferences;
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
     public DatabaseReference myRef = database.getReference();
 
-    private ProfileViewModel profileViewModel;
+    //private ProfileViewModel profileViewModel;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -52,8 +58,18 @@ public class ProfileFragment extends Fragment {
         Log.i("OnCreate", "Profile");
 
         Intent i = getActivity().getIntent();
+        first= i.getStringExtra("first");
+        last = i.getStringExtra("last");
         email = i.getStringExtra("email");
         password = i.getStringExtra("password");
+
+        profileRef = new Profile(first, last, email, password);
+
+        myRef.child("Users").child("Login").child("Email").setValue(email);
+        myRef.child("Users").child("Login").child("First").setValue(first);
+        myRef.child("Users").child("Login").child("Last").setValue(last);
+        myRef.child("Users").child("Login").child("Password").setValue(password);
+
         //profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         //final TextView textView = root.findViewById(R.id.text_profile);
@@ -67,12 +83,11 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         user_id = sharedPreferences.getString("USER_ID", "");
 
-
         recyclerView = root.findViewById(R.id.event_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -83,10 +98,13 @@ public class ProfileFragment extends Fragment {
         Map<String,?> keys = sharedPreferences.getAll();
 
         for(Map.Entry<String,?> entry : keys.entrySet()){
-            if(entry.getKey().matches("^\\d+$")) {
+            if(entry.getKey().toString().contains("lat/lng:")) {
                 Log.d("map values", entry.getKey() + ": " +
                         entry.getValue().toString());
-                Event event = new Event(user_id,null);
+
+                LatLng latLng = Event.getLatLng(entry.getKey());
+
+                Event event = new Event(user_id,latLng);
                 eventArrayList.add(event);
             }
         }
