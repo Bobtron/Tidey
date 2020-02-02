@@ -1,6 +1,7 @@
 package edu.hacksc.trashyredditapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -26,10 +28,18 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText email_text;
     private EditText password_text;
-    private String TAG = "I_WANNA_SLEEP";
+    public static String TAG = "I_WANNA_SLEEP";
+
+    SharedPreferences sharedPreferences;
+
 
     public void updateUI(FirebaseUser user){
         if(user != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putString("USER_ID", user.getUid());
+            editor.commit();
+
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }
@@ -37,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         mAuth = FirebaseAuth.getInstance();
 
         super.onCreate(savedInstanceState);

@@ -1,6 +1,7 @@
 package edu.hacksc.trashyredditapp.ui.bookmarks;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ public class BookmarksFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Log.i("OnCreate", "Book");
+
         bookmarksViewModel =
                 ViewModelProviders.of(this).get(BookmarksViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bookmarks, container, false);

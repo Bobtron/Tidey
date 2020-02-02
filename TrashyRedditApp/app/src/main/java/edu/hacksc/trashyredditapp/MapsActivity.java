@@ -1,10 +1,24 @@
 package edu.hacksc.trashyredditapp;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.gms.location;
@@ -14,14 +28,51 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, LocationListener {
 
     private GoogleMap mMap;
     private Marker mMarker;
+    String user_id;
+
+    private LocationManager locationManager;
+
+    SharedPreferences sharedPreferences;
+
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("hi", "onCreateMapFragment");
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        user_id = sharedPreferences.getString("USER_ID", "");
+
+        //BottomNavigationView bnv = findViewById(R.id.bnv);
+        //Log.i("hi", bnv.toString());
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }else {
+            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            if (lastKnownLocation != null) {
+//                updateMap(lastKnownLocation);
+//                Log.i(MainActivity.APP_TAG, "GOING TO LAST KNOWN LOCATION");
+//            }else{
+//                Log.i(MainActivity.APP_TAG, "THE LAST KNOWN LOCATION IS NULL");
+//            }
+        }
+
+         //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -29,6 +80,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
+//    public void goToMain(View view){
+//        Log.i("hi", "gotomain");
+//
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        startActivity(intent);
+//    }
 
 
     /**
@@ -42,6 +100,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.i("hi", "onMapReady");
+
+
+
+
+
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
@@ -53,10 +117,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+                editor.putString(point.toString(), user_id);
+                editor.commit();
+
+                Log.i(LoginActivity.TAG, sharedPreferences.getString("USER_ID", "") + " " + point.toString());
+
                 mMarker = mMap.addMarker(new MarkerOptions().position(point).title("New Marker"));
                 Log.i("MARKER", "Created Marker");
 //                mMarker.setPosition(point);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+
             }
         });
 
@@ -71,5 +144,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
 //            }
 //        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if(mMap != null) {
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+            mMap.animateCamera(cameraUpdate);
+            locationManager.removeUpdates(this);
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
+
+    @Override
+    public void onProviderEnabled(String provider) { }
+
+    @Override
+    public void onProviderDisabled(String provider) { }
+
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String result = sharedPreferences.getString(marker.getPosition().toString(), "");
+        if(result.length() > 0 && result.equals(user_id)){
+            marker.remove();
+            return true;
+        }
+        return false;
     }
 }
