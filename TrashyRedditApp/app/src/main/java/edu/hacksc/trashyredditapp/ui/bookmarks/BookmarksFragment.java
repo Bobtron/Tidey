@@ -16,22 +16,22 @@ import edu.hacksc.trashyredditapp.R;
 
 public class BookmarksFragment extends Fragment {
 
-    private BookmarksViewModel bookmarksViewModel;
+   // private BookmarksViewModel bookmarksViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Log.i("OnCreate", "Book");
 
-        bookmarksViewModel =
-                ViewModelProviders.of(this).get(BookmarksViewModel.class);
+//        bookmarksViewModel =
+//                ViewModelProviders.of(this).get(BookmarksViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bookmarks, container, false);
-        final TextView textView = root.findViewById(R.id.text_bookmarks);
-        bookmarksViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.text_bookmarks);
+//        bookmarksViewModel.getText().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 

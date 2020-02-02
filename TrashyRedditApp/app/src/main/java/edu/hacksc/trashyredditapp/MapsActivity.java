@@ -38,7 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, LocationListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , LocationListener {
      //private MapInfoWindowFragment mapInfoWindowFragment;
         private GoogleMap mMap;
         private Marker mMarker;
@@ -135,18 +135,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("map values", entry.getKey() + ": " +
                         entry.getValue().toString());
 
-                LatLng latLng = Event.getLatLng(entry.getKey());
+                LatLng latLng = Event.GetLatLng(entry.getKey());
                 mMap.addMarker(new MarkerOptions().position(latLng));
 
             }
         }
 
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//           @Override
+//           public boolean onMarkerClick(Marker marker){
+//               SharedPreferences.Editor editor = sharedPreferences.edit();
+//               if (true){
+//                   Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+//                   String pos = marker.getPosition().toString();
+//                   i.putExtra("location", pos);
+//                   //startActivity(i);
+//
+//                   return true;
+//               }
+//
+//               return false;
+//           }
+//
+//       });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+                String pos = marker.getPosition().toString();
+                String stringID = marker.getId();
+                i.putExtra("location", pos);
+                i.putExtra("stringID", stringID);
+                startActivity(i);
+            }
+        });
+
+       mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+           @Override
+           public boolean onMarkerClick( final Marker marker){
+               marker.showInfoWindow();
+               return false;
+           }
+       });
 
         mMap.setOnMapClickListener(new OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
 //                mMarker.setPosition(point);
-                if (mMarker != null && mMarker.getTitle().equals("Is this a trash site?")) {
+                if (mMarker != null) {
                     //User has clicked a part of the map when prompted yes or no buttons to the question
                     mMarker.remove();
                     mMarker = null;
@@ -175,8 +212,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // TODO Auto-generated method stub
                             pickConfirm.setVisibility(View.INVISIBLE);
                             pickReject.setVisibility(View.INVISIBLE);
-                            mMarker.setTitle("Trash Site");
+                            mMarker.setTitle("Click here if you would like to create a clean up event");
+                            mMarker.hideInfoWindow();
                             Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
+                            mMarker = null;
                         }
                     });
                     pickReject.setOnClickListener(new Button.OnClickListener() {
@@ -256,17 +295,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onProviderDisabled (String provider){
     }
 
-    @Override
-    public boolean onMarkerClick( final Marker marker){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+//    @Override
+//    public boolean onMarkerClick( final Marker marker){
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        Log.d("hello", "line reached");
+////        String result = sharedPreferences.getString(marker.getPosition().toString(), "");
+////        if (result.length() > 0 && result.equals(user_id)) {
+////            marker.remove();
+////            editor.remove(marker.getPosition().toString());
+//            Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+//            String pos = marker.getPosition().toString();
+//            i.putExtra("location", "pos");
+//
+//
+//            startActivity(i);
+//            return true;
+////        }
+//
+////        return false;
+//    }
 
-        String result = sharedPreferences.getString(marker.getPosition().toString(), "");
-        if (result.length() > 0 && result.equals(user_id)) {
-            marker.remove();
-            editor.remove(marker.getPosition().toString());
-            return true;
-        }
-        return false;
-    }
+
 }
 

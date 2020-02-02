@@ -34,10 +34,6 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    //public FirebaseDatabase database = FirebaseDatabase.getInstance();
-    //public DatabaseReference myRef = database.getReference();
-
-    //myRef.setValue("Hello, World!");
 
     public void updateUI(FirebaseUser user){
         if(user != null){
@@ -70,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
             }
         });
 
@@ -113,13 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         // ...
-                        //Map<String, Object> behavior = new HashMap<>();
-                        //behavior.put("Likes: ", "");
-                        //behavior.put("Current Events: ", "");
-
-                        //database.collection("Users").document(email).set(behavior);
-                        //DatabaseReference myRef = database.getReference("Users");
-                        //myRef.setValue("hello world!");
                     }
                 });
     }

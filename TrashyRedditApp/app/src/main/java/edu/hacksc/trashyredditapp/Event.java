@@ -1,13 +1,14 @@
 package edu.hacksc.trashyredditapp;
 
 import com.google.android.gms.maps.model.LatLng;
-
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Event {
     public String user_id;
     public LatLng point;
+    public ArrayList<String> participants;
 
     public Event(String user_id, LatLng point) {
         this.user_id = user_id;
@@ -22,7 +23,19 @@ public class Event {
         return point;
     }
 
-    public static LatLng getLatLng(String info){
+    public boolean addUser(String user) {
+        boolean found_user = false;
+        for (int i = 0; i < participants.size(); ++i) {
+            if (participants.get(i) == user) found_user = true;
+            if (found_user) {
+                return false;
+            }
+        }
+        participants.add(user);
+        return true;
+    }
+
+    public static LatLng GetLatLng(String info){
         Pattern latPtrn = Pattern.compile("\\((-?\\d+\\.\\d+),");
         Matcher latMtchr = latPtrn.matcher(info);
 
