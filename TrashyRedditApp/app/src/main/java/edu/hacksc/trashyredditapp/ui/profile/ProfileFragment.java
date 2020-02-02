@@ -119,20 +119,6 @@ public class ProfileFragment extends Fragment {
 
         eventArrayList = new ArrayList<Event>();
 
-        Map<String,?> keys = sharedPreferences.getAll();
-
-        for(Map.Entry<String,?> entry : keys.entrySet()){
-            if(entry.getKey().toString().contains("lat/lng:")) {
-                Log.d("map values", entry.getKey() + ": " +
-                        entry.getValue().toString());
-
-                LatLng latLng = Event.GetLatLng(entry.getKey());
-
-                Event event = new Event(user_id,latLng);
-                eventArrayList.add(event);
-            }
-        }
-
         //display_top.setText("Hello " + first + "!");
 
         // specify an adapter (see also next example)
