@@ -143,14 +143,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
            @Override
-           public boolean onMarkerClick( final Marker marker){
+           public boolean onMarkerClick(Marker marker){
                SharedPreferences.Editor editor = sharedPreferences.edit();
-               Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
-               String pos = marker.getPosition().toString();
-               i.putExtra("location", "pos");
-               startActivity(i);
-               return true;
+               if (true){
+                   Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+                   String pos = marker.getPosition().toString();
+                   i.putExtra("location", pos);
+                   //startActivity(i);
+
+                   return true;
+               }
+
+               return false;
            }
+
        });
 
 
