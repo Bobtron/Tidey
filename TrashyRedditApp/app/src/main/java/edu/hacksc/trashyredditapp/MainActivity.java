@@ -18,16 +18,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import edu.hacksc.trashyredditapp.ui.profile.ProfileFragment;
-import edu.hacksc.trashyredditapp.ui.profile.ProfileViewModel;
+//import edu.hacksc.trashyredditapp.ui.profile.ProfileViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    public String first;
-    public String last;
-    public String email;
-    public String password;
+//    public String first;
+//    public String last;
+//    public String email;
+//    public String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +59,22 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         Intent i = getIntent();
-        first = i.getStringExtra("first");
-        last = i.getStringExtra("last");
-        email = i.getStringExtra("email");
-        password = i.getStringExtra("password");
+        final String first= i.getStringExtra("first");
+        final String last = i.getStringExtra("last");
+        final String email = i.getStringExtra("email");
+        final String password = i.getStringExtra("password");
 
-        Intent intent = new Intent(getApplicationContext(), ProfileViewModel.class);
+        Intent intent = new Intent(getApplicationContext(), ProfileFragment.class);
+        intent.putExtra("first", first);
+        intent.putExtra("last", last);
+        intent.putExtra("email", email);
+        intent.putExtra("password", password);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("first", first);
+        editor.putString("last", last);
+        editor.putString("email", email);
+        editor.putString("password", password);
     }
 
 }

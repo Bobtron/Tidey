@@ -34,16 +34,20 @@ public class ProfileFragment extends Fragment {
 
     String email;
     String password;
+    String first;
+    String last;
     String user_id;
 
     ArrayList<Event> eventArrayList;
+
+    public Profile profileRef;
 
     SharedPreferences sharedPreferences;
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance();
     public DatabaseReference myRef = database.getReference();
 
-    private ProfileViewModel profileViewModel;
+    //private ProfileViewModel profileViewModel;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -54,8 +58,18 @@ public class ProfileFragment extends Fragment {
         Log.i("OnCreate", "Profile");
 
         Intent i = getActivity().getIntent();
+        first= i.getStringExtra("first");
+        last = i.getStringExtra("last");
         email = i.getStringExtra("email");
         password = i.getStringExtra("password");
+
+        profileRef = new Profile(first, last, email, password);
+
+        myRef.child("Users").child("Login").child("Email").setValue(email);
+        myRef.child("Users").child("Login").child("First").setValue(first);
+        myRef.child("Users").child("Login").child("Last").setValue(last);
+        myRef.child("Users").child("Login").child("Password").setValue(password);
+
         //profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         //final TextView textView = root.findViewById(R.id.text_profile);
