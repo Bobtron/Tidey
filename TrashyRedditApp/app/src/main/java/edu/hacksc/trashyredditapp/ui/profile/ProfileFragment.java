@@ -92,7 +92,7 @@ public class ProfileFragment extends Fragment {
         user_id = sharedPreferences.getString("USER_ID", "");
 
         recyclerView = root.findViewById(R.id.event_recycler_view);
-        display_top = root.findViewById(R.id.text_profile);
+        //display_top = root.findViewById(R.id.text_profile);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -118,7 +118,7 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        display_top.setText("Hello " + first + "!");
+        //display_top.setText("Hello " + first + "!");
 
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(eventArrayList);
