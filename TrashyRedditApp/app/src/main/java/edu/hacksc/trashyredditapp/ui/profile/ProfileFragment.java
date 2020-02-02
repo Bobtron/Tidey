@@ -177,12 +177,12 @@ public class ProfileFragment extends Fragment {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     Pin pin = data.getValue(Pin.class);
                     Log.d(LoginActivity.TAG, "here " + pin.latitude);
-
+                    Event event = new Event(pin.title, pin.latitude, pin.longitude, pin.userFirstName, 3, 4, 5, pin.title);
 //                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(pin.latitude), Double.parseDouble(pin.longitude))).title("Is this a trash site?"));
-                    // specify an adapter (see also next example)
-                    mAdapter = new MyAdapter(eventArrayList);
-                    recyclerView.setAdapter(mAdapter);
+                    eventArrayList.add(event);
                 }
+                // specify an adapter (see also next example)
+
             }
 
 
@@ -192,6 +192,9 @@ public class ProfileFragment extends Fragment {
                 Log.w(LoginActivity.TAG, "Failed to read value.", error.toException());
             }
         });
+
+        mAdapter = new MyAdapter(eventArrayList);
+        recyclerView.setAdapter(mAdapter);
 
         return root;
     }

@@ -68,15 +68,15 @@ public class JoinEventActivity extends AppCompatActivity {
         existing_members = findViewById(R.id.members);
     }
 
-    public void register(View view){ addUser(username, event); }
+//    public void register(View view){ addUser(username, event); }
 
-    public void addUser(String username, Event event) {
-
-        if (event.addUser(username)) {
-            Log.i(TAG, "addtoEvent:success");
-        }
-        else {
-            Log.i(TAG, "addtoEvent:failure");
-        }
-    }
+//    public void addUser(String username, Event event) {
+//
+//        if (event.addUser(username)) {
+//            Log.i(TAG, "addtoEvent:success");
+//        }
+//        else {
+//            Log.i(TAG, "addtoEvent:failure");
+//        }
+//    }
 }
