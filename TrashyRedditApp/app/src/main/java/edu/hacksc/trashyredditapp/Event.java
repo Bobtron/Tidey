@@ -25,14 +25,17 @@ public class Event {
 
     public boolean addUser(String user) {
         boolean found_user = false;
-        for (int i=0; i<participants.size(); ++i) {
+        for (int i = 0; i < participants.size(); ++i) {
             if (participants.get(i) == user) found_user = true;
-            if (found_user) { return false; }
+            if (found_user) {
+                return false;
+            }
         }
         participants.add(user);
         return true;
+    }
 
-    public static LatLng getLatLng(String info){
+    public static LatLng GetLatLng(String info){
         Pattern latPtrn = Pattern.compile("\\((-?\\d+\\.\\d+),");
         Matcher latMtchr = latPtrn.matcher(info);
 

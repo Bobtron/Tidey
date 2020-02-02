@@ -38,7 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, LocationListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , LocationListener {
      //private MapInfoWindowFragment mapInfoWindowFragment;
         private GoogleMap mMap;
         private Marker mMarker;
@@ -135,11 +135,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("map values", entry.getKey() + ": " +
                         entry.getValue().toString());
 
-                LatLng latLng = Event.getLatLng(entry.getKey());
+                LatLng latLng = Event.GetLatLng(entry.getKey());
                 mMap.addMarker(new MarkerOptions().position(latLng));
 
             }
         }
+
+       mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+           @Override
+           public boolean onMarkerClick( final Marker marker){
+               SharedPreferences.Editor editor = sharedPreferences.edit();
+               Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+               String pos = marker.getPosition().toString();
+               i.putExtra("location", "pos");
+               startActivity(i);
+               return true;
+           }
+       });
 
 
         mMap.setOnMapClickListener(new OnMapClickListener() {
@@ -258,24 +270,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onProviderDisabled (String provider){
     }
 
-    @Override
-    public boolean onMarkerClick( final Marker marker){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+//    @Override
+//    public boolean onMarkerClick( final Marker marker){
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        Log.d("hello", "line reached");
+////        String result = sharedPreferences.getString(marker.getPosition().toString(), "");
+////        if (result.length() > 0 && result.equals(user_id)) {
+////            marker.remove();
+////            editor.remove(marker.getPosition().toString());
+//            Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+//            String pos = marker.getPosition().toString();
+//            i.putExtra("location", "pos");
+//
+//
+//            startActivity(i);
+//            return true;
+////        }
+//
+////        return false;
+//    }
 
-        String result = sharedPreferences.getString(marker.getPosition().toString(), "");
-        if (result.length() > 0 && result.equals(user_id)) {
-            marker.remove();
-            editor.remove(marker.getPosition().toString());
-            Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
-            String pos = marker.getPosition().toString();
-            i.putExtra("location", "pos");
 
-
-            startActivity(i);
-            return true;
-        }
-
-        return false;
-    }
 }
 

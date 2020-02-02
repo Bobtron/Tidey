@@ -102,7 +102,7 @@ public class ProfileFragment extends Fragment {
                 Log.d("map values", entry.getKey() + ": " +
                         entry.getValue().toString());
 
-                LatLng latLng = Event.getLatLng(entry.getKey());
+                LatLng latLng = Event.GetLatLng(entry.getKey());
 
                 Event event = new Event(user_id,latLng);
                 eventArrayList.add(event);
