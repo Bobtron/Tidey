@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import edu.hacksc.trashyredditapp.ui.profile.ProfileFragment;
 
+import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -95,10 +96,13 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.i(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), ProfileFragment.class);
+                            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                             intent.putExtra("email", email_text.toString());
                             intent.putExtra("password", password_text.toString());
-                            updateUI(user);
+                            intent.putExtra("user_parcel", user);
+                            startActivity(intent);
+
+                            //updateUI(user);
 
                         } else {
                             // If sign in fails, display a message to the user.
