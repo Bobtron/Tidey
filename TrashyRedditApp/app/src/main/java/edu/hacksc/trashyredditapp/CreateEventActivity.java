@@ -9,8 +9,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,11 +28,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class CreateEventActivity extends AppCompatActivity {
-    private String loc;
+    private String loc, latitude, longitude, owner;
     private TextView location;
     private EditText eventNameText;
     private Button createEventButton;
     public static String TAG = "I_WANNA_SLEEP";
+    public static int ZERO = 0;
 
     SharedPreferences sharedPreferences;
     private DatabaseReference mDatabase;
@@ -44,9 +48,46 @@ public class CreateEventActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         String loc = i.getStringExtra("location");
+        final String pinID = i.getStringExtra("pinID");
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        DatabaseReference currPin = mDatabase.child("pins").child(pinID);
+
+        currPin.child("latitude").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                latitude = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        currPin.child("longitude").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                longitude = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        currPin.child("owner").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                owner = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         location = findViewById(R.id.loc);
         location.setText("Location: \n" + loc);
         eventNameText = findViewById(R.id.editTextEventName);
@@ -58,6 +99,11 @@ public class CreateEventActivity extends AppCompatActivity {
                 String eventName = eventNameText.getText().toString();
                 i.putExtra("eventName", eventName);
                 String eventID = mDatabase.push().getKey();
+                Event event = new Event(eventName, latitude, longitude, owner, ZERO, ZERO, ZERO, null);
+                mDatabase.child("events").child(eventID).setValue(event);
+
+                mDatabase.child("pins").child(pinID).child("eventID").setValue(eventID);
+                mDatabase.child("pins").child(pinID).child("title").setValue(eventName);
                 startActivity(i);
                 Toast.makeText(CreateEventActivity.this, "New Event Saved",
                         Toast.LENGTH_SHORT).show();

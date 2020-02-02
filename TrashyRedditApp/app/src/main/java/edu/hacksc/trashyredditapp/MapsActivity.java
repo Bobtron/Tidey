@@ -258,6 +258,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             String markerID = mDatabase.push().getKey();
 
                             Pin pin = new Pin(mMarker.getTitle(), "" + mMarker.getPosition().latitude, "" + mMarker.getPosition().longitude, "" + -1, sharedPreferences.getString("first", ""), sharedPreferences.getString("USER_ID", ""));
+//                            Pin pin = new Pin(mMarker.getTitle(), "" + mMarker.getPosition().latitude, "" + mMarker.getPosition().longitude, null, sharedPreferences.getString("first", ""), sharedPreferences.getString("USER_ID", ""));
 //                            Pin pin = new Pin(mMarker.getTitle(), mMarker.getPosition(), null);
                             mDatabase.child("pins").child(markerID).setValue(pin);
                             mMarker.remove();

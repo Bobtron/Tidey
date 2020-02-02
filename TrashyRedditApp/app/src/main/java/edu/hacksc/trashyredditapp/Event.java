@@ -18,7 +18,7 @@ public class Event {
 
     public Event() {
     }
-    
+
     public Event(String eventName, String latitude, String longitude, String owner, int numOfGuests, int upvotes,
                  int downvotes, String description) {
         this.eventName = eventName;

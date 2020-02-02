@@ -68,10 +68,11 @@ public class JoinEventActivity extends AppCompatActivity {
         existing_members = findViewById(R.id.members);
     }
 
-//    public void register(View view){ addUser(username, event); }
 
-//    public void addUser(String username, Event event) {
-//
+    public void register(View view){ addUser(username, event); }
+
+    public void addUser(String username, Event event) {
+
 //        if (event.addUser(username)) {
 //            Log.i(TAG, "addtoEvent:success");
 //        }
@@ -79,4 +80,6 @@ public class JoinEventActivity extends AppCompatActivity {
 //            Log.i(TAG, "addtoEvent:failure");
 //        }
 //    }
+    }
+
 }
