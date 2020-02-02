@@ -35,19 +35,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , LocationListener {
-     //private MapInfoWindowFragment mapInfoWindowFragment;
-        private GoogleMap mMap;
-        private Marker mMarker;
-        String user_id;
-        Button pickConfirm;
-        Button pickReject;
-        private LocationManager locationManager;
+    //private MapInfoWindowFragment mapInfoWindowFragment;
+    private GoogleMap mMap;
+    private Marker mMarker;
+    String user_id;
+    Button pickConfirm;
+    Button pickReject;
+    private LocationManager locationManager;
 
-        SharedPreferences sharedPreferences;
+    private DatabaseReference mDatabase;
+
+    SharedPreferences sharedPreferences;
 
         private static final long MIN_TIME = 400;
         private static final float MIN_DISTANCE = 1000;
@@ -58,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+            FirebaseDatabase.getInstance().getReference("markers");
             user_id = sharedPreferences.getString("USER_ID", "");
 
             //BottomNavigationView bnv = findViewById(R.id.bnv);
@@ -160,7 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
-            public void onInfoWindowClick(Marker marker) {
+            public void onInfoWindowClick(com.google.android.gms.maps.model.Marker marker) {
                 if (marker.getTitle().equals("Click here if you would like to create a clean up event")) {
                     Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
                     String pos = marker.getPosition().toString();
@@ -172,9 +177,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
            @Override
-           public boolean onMarkerClick( final Marker marker){
+           public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker) {
                marker.setTitle("Click here if you would like to create a clean up event");
                Log.v("MARKER", marker.getTitle() + " is the marker title");
                marker.showInfoWindow();
@@ -219,6 +225,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mMarker.hideInfoWindow();
                             Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
                             mMarker = null;
+
+                            String markerID = mDatabase.push().getKey();
+                            Pin pin = new Pin(mMarker.getTitle(), mMarker.getPosition(), null);
+                            mDatabase.child(markerID).setValue(pin);
+
                         }
                     });
                     pickReject.setOnClickListener(new Button.OnClickListener() {

@@ -12,66 +12,79 @@
         android:id="@+id/event_name"
         android:layout_width="294dp"
         android:layout_height="59dp"
+        android:layout_marginTop="20dp"
         android:background="#FFFFFF"
         android:fontFamily="monospace"
         android:foregroundTint="#FFFFFF"
         android:text="Trash Cleanup in Santa Monica!"
-        tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="75dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loc" />
 
     <TextView
         android:id="@+id/date_time"
         android:layout_width="224dp"
         android:layout_height="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="24dp"
         android:background="#FFFFFF"
         android:fontFamily="monospace"
         android:foregroundTint="#FFFFFF"
         android:text="2/9/2020 8 PM"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="156dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_name" />
 
     <TextView
         android:id="@+id/organizer"
         android:layout_width="222dp"
         android:layout_height="69dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="24dp"
         android:background="#FFFFFF"
         android:fontFamily="monospace"
         android:foregroundTint="#FFFFFF"
         android:text="Organizer: Jackie Fan"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="236dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_time" />
 
     <TextView
         android:id="@+id/members"
         android:layout_width="224dp"
         android:layout_height="72dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
         android:background="#FFFFFF"
         android:fontFamily="monospace"
         android:foregroundTint="#FFFFFF"
         android:text="Members: Rain Cinco, Mehul Krishna, Justin Ly, Terence Li"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="326dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organizer" />
 
     <Button
         android:id="@+id/create"
         android:layout_width="283dp"
         android:layout_height="53dp"
+        android:layout_marginTop="72dp"
         android:background="#FFFFFF"
         android:foregroundTint="#FFFFFF"
         android:text="Join Event"
-        tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="418dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/members" />
 
     <TextView
         android:id="@+id/loc"
         android:layout_width="291dp"
         android:layout_height="21dp"
+        android:layout_marginTop="16dp"
         android:background="#FFFFFF"
         android:fontFamily="monospace"
         android:foregroundTint="#FFFFFF"
         android:text="Location: 34°01'31.0&quot;N 118°29'54.1&quot;W"
         android:textStyle="normal"
-        tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
