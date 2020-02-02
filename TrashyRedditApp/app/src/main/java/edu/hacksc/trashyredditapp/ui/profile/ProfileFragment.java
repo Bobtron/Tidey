@@ -16,10 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.hacksc.trashyredditapp.Event;
+import edu.hacksc.trashyredditapp.LoginActivity;
 import edu.hacksc.trashyredditapp.MyAdapter;
+import edu.hacksc.trashyredditapp.Pin;
 import edu.hacksc.trashyredditapp.R;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -166,25 +169,27 @@ public class ProfileFragment extends Fragment {
 
         eventArrayList = new ArrayList<Event>();
 
-        Map<String,?> keys = sharedPreferences.getAll();
+        mDatabase.child("pins").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-        for(Map.Entry<String,?> entry : keys.entrySet()){
-            if(entry.getKey().toString().contains("lat/lng:")) {
-                Log.d("map values", entry.getKey() + ": " +
-                        entry.getValue().toString());
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    Pin pin = data.getValue(Pin.class);
+                    Log.d(LoginActivity.TAG, "here " + pin.latitude);
 
-                LatLng latLng = Event.GetLatLng(entry.getKey());
-
-                Event event = new Event(user_id,latLng);
-                eventArrayList.add(event);
+//                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(pin.latitude), Double.parseDouble(pin.longitude))).title("Is this a trash site?"));
+                    // specify an adapter (see also next example)
+                    mAdapter = new MyAdapter(eventArrayList);
+                    recyclerView.setAdapter(mAdapter);
+                }
             }
-        }
 
-
-
-        // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(eventArrayList);
-        recyclerView.setAdapter(mAdapter);
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(LoginActivity.TAG, "Failed to read value.", error.toException());
+            }
+        });
 
         return root;
     }
