@@ -65,7 +65,11 @@ public class RegisterActivity extends AppCompatActivity {
         editor.commit();
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("first", first_name.toString());
+        intent.putExtra("last", last_name.toString());
         //intent.putExtra("database", database);
+        intent.putExtra("email", email);
+        intent.putExtra("password", password);
         startActivity(intent);
     }
 

@@ -97,18 +97,5 @@ public class ProfileFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
     }
 
-    public class Profile{
-        public String first;
-        public String last;
-        public String city;
-        public Profile(){
-
-        }
-        public Profile(String first, String last, String city){
-            this.first = first;
-            this.last = last;
-            this.city = city;
-        }
-    }
 
 }
