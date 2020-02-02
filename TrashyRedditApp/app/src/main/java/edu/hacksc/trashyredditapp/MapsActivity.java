@@ -136,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         entry.getValue().toString());
 
                 LatLng latLng = Event.getLatLng(entry.getKey());
-                mMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+                mMap.addMarker(new MarkerOptions().position(latLng));
 
             }
         }

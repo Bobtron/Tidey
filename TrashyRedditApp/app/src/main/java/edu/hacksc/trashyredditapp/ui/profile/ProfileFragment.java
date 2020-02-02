@@ -83,7 +83,6 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         user_id = sharedPreferences.getString("USER_ID", "");
 
-
         recyclerView = root.findViewById(R.id.event_recycler_view);
 
         // use this setting to improve performance if you know that changes
