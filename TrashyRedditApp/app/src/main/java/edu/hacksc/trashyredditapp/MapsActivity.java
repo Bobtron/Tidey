@@ -1,5 +1,6 @@
 package edu.hacksc.trashyredditapp;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -42,6 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final long MIN_TIME = 400;
     private static final float MIN_DISTANCE = 1000;
+
+
+
 
 
     @Override
@@ -79,14 +84,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
 
-//    public void goToMain(View view){
-//        Log.i("hi", "gotomain");
-//
-//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//        startActivity(intent);
-//    }
+        BottomNavigationView bnv = findViewById(R.id.nav_view);
+        bnv.bringToFront();
+
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Log.i("hi", "gotomain");
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+    }
 
 
     /**
@@ -109,9 +121,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
+        //LatLng sydney = new LatLng(-34, 151);
+        //mMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        //mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.setOnMapClickListener(new OnMapClickListener() {
