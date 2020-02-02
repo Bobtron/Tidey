@@ -28,26 +28,32 @@
         android:id="@+id/confirmTrashSite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginLeft="125dp"
         android:text="Yes"
         android:textSize="32px"
         android:visibility="gone"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        />
+         android:layout_marginLeft="100dp"-->
+    <!--        android:layout_marginRight="100dp"-->
+    <!--        android:layout_marginBottom="100dp"-->
 
     <Button
         android:id="@+id/rejectTrashSite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="600dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginLeft="200dp"
         android:text="No"
         android:textSize="32px"
-        android:visibility="gone"
-        tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        android:visibility="gone" />
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+
+<!--        tools:layout_conversion_absoluteHeight="0dp"-->
+<!--        tools:layout_editor_absoluteY="0dp"-->
+<!--        tools:layout_editor_absoluteX="0dp"-->
+<!--        tools:layout_conversion_absoluteWidth="0dp" />-->
 
 </fragment>

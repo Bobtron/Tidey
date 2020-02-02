@@ -146,7 +146,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng point) {
 //                mMarker.setPosition(point);
-                if (mMarker != null && mMarker.getTitle().equals("Is this a trash site?")) {
+                if (mMarker != null) {
                     //User has clicked a part of the map when prompted yes or no buttons to the question
                     mMarker.remove();
                     mMarker = null;
@@ -176,7 +176,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             pickConfirm.setVisibility(View.INVISIBLE);
                             pickReject.setVisibility(View.INVISIBLE);
                             mMarker.setTitle("Trash Site");
+                            mMarker.hideInfoWindow();
                             Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
+                            mMarker = null;
                         }
                     });
                     pickReject.setOnClickListener(new Button.OnClickListener() {
