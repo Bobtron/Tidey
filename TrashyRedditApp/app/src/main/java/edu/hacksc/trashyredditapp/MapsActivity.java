@@ -141,24 +141,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//           @Override
+//           public boolean onMarkerClick(Marker marker){
+//               SharedPreferences.Editor editor = sharedPreferences.edit();
+//               if (true){
+//                   Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+//                   String pos = marker.getPosition().toString();
+//                   i.putExtra("location", pos);
+//                   //startActivity(i);
+//
+//                   return true;
+//               }
+//
+//               return false;
+//           }
+//
+//       });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+                String pos = marker.getPosition().toString();
+                String stringID = marker.getId();
+                i.putExtra("location", pos);
+                i.putExtra("stringID", stringID);
+                startActivity(i);
+            }
+        });
+
        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
            @Override
-           public boolean onMarkerClick(Marker marker){
-               SharedPreferences.Editor editor = sharedPreferences.edit();
-               if (true){
-                   Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
-                   String pos = marker.getPosition().toString();
-                   i.putExtra("location", pos);
-                   //startActivity(i);
-
-                   return true;
-               }
-
+           public boolean onMarkerClick( final Marker marker){
+               marker.showInfoWindow();
                return false;
            }
-
        });
-
 
         mMap.setOnMapClickListener(new OnMapClickListener() {
             @Override
@@ -193,7 +212,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // TODO Auto-generated method stub
                             pickConfirm.setVisibility(View.INVISIBLE);
                             pickReject.setVisibility(View.INVISIBLE);
-                            mMarker.setTitle("Trash Site");
+                            mMarker.setTitle("Click here if you would like to create a clean up event");
                             mMarker.hideInfoWindow();
                             Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
                             mMarker = null;
