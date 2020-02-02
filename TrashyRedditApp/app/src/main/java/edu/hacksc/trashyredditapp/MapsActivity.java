@@ -268,8 +268,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             editor.remove(marker.getPosition().toString());
             Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
             String pos = marker.getPosition().toString();
-            i.putExtra("location", "pos");
-
+            i.putExtra("location", pos);
 
             startActivity(i);
             return true;
