@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +36,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
@@ -134,17 +138,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        Map<String,?> keys = sharedPreferences.getAll();
-        for(Map.Entry<String,?> entry : keys.entrySet()){
-            if(entry.getKey().toString().contains("lat/lng:")) {
-                Log.d("map values", entry.getKey() + ": " +
-                        entry.getValue().toString());
+//        Map<String,?> keys = sharedPreferences.getAll();
+//        for(Map.Entry<String,?> entry : keys.entrySet()){
+//            if(entry.getKey().toString().contains("lat/lng:")) {
+//                Log.d("map values", entry.getKey() + ": " +
+//                        entry.getValue().toString());
+//
+//                LatLng latLng = Event.GetLatLng(entry.getKey());
+//                mMap.addMarker(new MarkerOptions().position(latLng));
+//
+//            }
+//        }
+        mDatabase.child("pins").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                LatLng latLng = Event.GetLatLng(entry.getKey());
-                mMap.addMarker(new MarkerOptions().position(latLng));
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    Pin pin = data.getValue(Pin.class);
+                    Log.d(LoginActivity.TAG, "here " + pin.latitude);
 
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(pin.latitude), Double.parseDouble(pin.longitude))).title("Is this a trash site?"));
+                }
             }
-        }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(LoginActivity.TAG, "Failed to read value.", error.toException());
+            }
+        });
 
 //        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 //           @Override
@@ -201,12 +223,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     pickReject.setVisibility(View.INVISIBLE);
                 }
                 else {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//                    editor.putString(point.toString(), user_id);
+//                    editor.commit();
 
-                    editor.putString(point.toString(), user_id);
-                    editor.commit();
-
-                    Log.i(LoginActivity.TAG, sharedPreferences.getString("USER_ID", "") + " " + point.toString());
+                    Log.i(LoginActivity.TAG, sharedPreferences.getString("  USER_ID", "") + " " + point.toString());
                     Log.i("MARKER", "Created Marker");
                     mMarker = mMap.addMarker(new MarkerOptions().position(point).title("Is this a trash site?"));
                     mMarker.showInfoWindow();
@@ -238,7 +260,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Pin pin = new Pin(mMarker.getTitle(), "" + mMarker.getPosition().latitude, "" + mMarker.getPosition().longitude, null, sharedPreferences.getString("first", ""), sharedPreferences.getString("USER_ID", ""));
 //                            Pin pin = new Pin(mMarker.getTitle(), mMarker.getPosition(), null);
                             mDatabase.child("pins").child(markerID).setValue(pin);
-
+                            mMarker.remove();
                             mMarker = null;
 
 
