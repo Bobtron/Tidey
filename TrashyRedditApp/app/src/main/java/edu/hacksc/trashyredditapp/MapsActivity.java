@@ -62,7 +62,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-            FirebaseDatabase.getInstance().getReference("markers");
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            
             user_id = sharedPreferences.getString("USER_ID", "");
 
             //BottomNavigationView bnv = findViewById(R.id.bnv);
@@ -224,11 +225,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mMarker.setTitle("Click here if you would like to create a clean up event");
                             mMarker.hideInfoWindow();
                             Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
-                            mMarker = null;
+
 
                             String markerID = mDatabase.push().getKey();
-                            Pin pin = new Pin(mMarker.getTitle(), mMarker.getPosition(), null);
-                            mDatabase.child(markerID).setValue(pin);
+
+                            Pin pin = new Pin(mMarker.getTitle(), "" + mMarker.getPosition().latitude, "" + mMarker.getPosition().longitude, null, sharedPreferences.getString("first", ""));
+//                            Pin pin = new Pin(mMarker.getTitle(), mMarker.getPosition(), null);
+                            mDatabase.child("pins").child(markerID).setValue(pin);
+
+                            mMarker = null;
 
                         }
                     });

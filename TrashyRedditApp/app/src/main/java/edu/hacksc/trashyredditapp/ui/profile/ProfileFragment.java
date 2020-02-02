@@ -20,8 +20,11 @@ import edu.hacksc.trashyredditapp.MyAdapter;
 import edu.hacksc.trashyredditapp.R;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -68,10 +71,68 @@ public class ProfileFragment extends Fragment {
 //        email = i.getStringExtra("email");
 //        password = i.getStringExtra("password");
 
-        first =  mDatabase.child("profiles").child(user_id).child("first");
-        last =  mDatabase.child("profiles").child(user_id).child("last");
-        email =  mDatabase.child("profiles").child(user_id).child("email");
-        password =  mDatabase.child("profiles").child(user_id).child("password");
+        DatabaseReference currUser = mDatabase.child("profiles").child(user_id);
+
+        currUser.child("first").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                first = dataSnapshot.getValue(String.class);
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("first", first);
+                editor.commit();
+
+                profile_name_text.setText("Hello " + last + ", " + first + "!");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        currUser.child("last").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                last = dataSnapshot.getValue(String.class);
+
+                profile_name_text.setText("Hello " + last + ", " + first + "!");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        currUser.child("email").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                email = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        currUser.child("password").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                password = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+//        first =  mDatabase.child("profiles").child(user_id).child("first");
+//        last =  mDatabase.child("profiles").child(user_id).child("last");
+//        email =  mDatabase.child("profiles").child(user_id).child("email");
+//        password =  mDatabase.child("profiles").child(user_id).child("password");
 
 //        profileRef = new Profile(first, last, email, password);
 //
@@ -118,7 +179,7 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        profile_name_text.setText("Hello " + last + ", " + first + "!");
+
 
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(eventArrayList);
