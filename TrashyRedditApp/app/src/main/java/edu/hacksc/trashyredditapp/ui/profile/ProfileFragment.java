@@ -169,6 +169,7 @@ public class ProfileFragment extends Fragment {
 
         eventArrayList = new ArrayList<Event>();
 
+
         mDatabase.child("pins").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -183,6 +184,7 @@ public class ProfileFragment extends Fragment {
                     recyclerView.setAdapter(mAdapter);
                 }
             }
+
 
             @Override
             public void onCancelled(DatabaseError error) {

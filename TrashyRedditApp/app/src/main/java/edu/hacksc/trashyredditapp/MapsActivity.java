@@ -192,9 +192,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (marker.getTitle().equals("Click here if you would like to create a clean up event")) {
                     Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
                     String pos = marker.getPosition().toString();
-                    String stringID = marker.getId();
+                    String pinID = marker.getId();
                     i.putExtra("location", pos);
-                    //i.putExtra("pinID", pinID);
+                    i.putExtra("pinID", pinID);
                     startActivity(i);
                 }
             }
