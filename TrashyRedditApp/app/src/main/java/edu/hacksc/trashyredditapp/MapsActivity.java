@@ -53,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onCreate(Bundle savedInstanceState) {
             Log.i("hi", "onCreateMapFragment");
 
-              sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
             user_id = sharedPreferences.getString("USER_ID", "");
 
@@ -217,6 +217,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String result = sharedPreferences.getString(marker.getPosition().toString(), "");
         if (result.length() > 0 && result.equals(user_id)) {
             marker.remove();
+            editor.remove(marker.getPosition().toString());
             return true;
         }
         return false;
