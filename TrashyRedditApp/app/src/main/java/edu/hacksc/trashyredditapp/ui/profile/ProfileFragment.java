@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
 
         return root;
     }
-    
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
