@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1094300891042-cn4u7dgn3ged7ncvg48qj9kss0iutsrg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.hacksc.trashyredditapp",
+            "certificate_hash": "b9220afe2f452eaf455f3e4ce730baa64324bee0"
+          }
+        },
+        {
           "client_id": "1094300891042-ua38hvtqq4tfcjocltr5e80cact62kb1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
