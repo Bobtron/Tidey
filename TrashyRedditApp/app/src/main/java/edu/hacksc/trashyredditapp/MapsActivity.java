@@ -186,15 +186,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //       });
 
+        final Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(com.google.android.gms.maps.model.Marker marker) {
                 if (marker.getTitle().equals("Click here if you would like to create a clean up event")) {
-                    Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
                     String pos = marker.getPosition().toString();
                     String pinID = marker.getId();
                     i.putExtra("location", pos);
-                    i.putExtra("pinID", pinID);
+                    marker.setTitle("-1");
+//                    i.putExtra("pinID", pinID);
                     startActivity(i);
                 }
             }
@@ -203,8 +205,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
            @Override
-           public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker) {
-               marker.setTitle("Click here if you would like to create a clean up event");
+           public boolean onMarkerClick(final com.google.android.gms.maps.model.Marker marker) {
+//               marker.setTitle("Click here if you would like to create a clean up event");
+               if (marker.getTitle().equals("-1")) {
+                   Intent in = getIntent();
+                   String pinID = in.getStringExtra("pinID");
+                   DatabaseReference currPin = mDatabase.child("pins").child(pinID);
+                   currPin.child("title").addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(DataSnapshot dataSnapshot) {
+                           marker.setTitle(dataSnapshot.getValue(String.class));
+                       }
+
+                       @Override
+                       public void onCancelled(DatabaseError databaseError) {
+
+                       }
+                   });
+               }
+               else {
+                   marker.setTitle("Click here if you would like to create a clean up event");
+               }
+
                Log.v("MARKER", marker.getTitle() + " is the marker title");
                marker.showInfoWindow();
                return false;
@@ -256,6 +278,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                             String markerID = mDatabase.push().getKey();
+                            i.putExtra("pinID", markerID);
+
 
                             Pin pin = new Pin(mMarker.getTitle(), "" + mMarker.getPosition().latitude, "" + mMarker.getPosition().longitude, "" + -1, sharedPreferences.getString("first", ""), sharedPreferences.getString("USER_ID", ""));
 //                            Pin pin = new Pin(mMarker.getTitle(), "" + mMarker.getPosition().latitude, "" + mMarker.getPosition().longitude, null, sharedPreferences.getString("first", ""), sharedPreferences.getString("USER_ID", ""));

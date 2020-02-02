@@ -53,7 +53,6 @@ public class CreateEventActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         DatabaseReference currPin = mDatabase.child("pins").child(pinID);
-
         currPin.child("latitude").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -101,9 +100,9 @@ public class CreateEventActivity extends AppCompatActivity {
                 String eventID = mDatabase.push().getKey();
                 Event event = new Event(eventName, latitude, longitude, owner, ZERO, ZERO, ZERO, null);
                 mDatabase.child("events").child(eventID).setValue(event);
-
                 mDatabase.child("pins").child(pinID).child("eventID").setValue(eventID);
                 mDatabase.child("pins").child(pinID).child("title").setValue(eventName);
+                i.putExtra("pinID", pinID);
                 startActivity(i);
                 Toast.makeText(CreateEventActivity.this, "New Event Saved",
                         Toast.LENGTH_SHORT).show();
