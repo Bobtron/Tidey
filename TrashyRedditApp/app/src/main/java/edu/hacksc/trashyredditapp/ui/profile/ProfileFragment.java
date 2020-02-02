@@ -21,6 +21,7 @@ import edu.hacksc.trashyredditapp.Event;
 import edu.hacksc.trashyredditapp.MyAdapter;
 import edu.hacksc.trashyredditapp.R;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,6 +32,7 @@ public class ProfileFragment extends Fragment {
 
     String email;
     String password;
+    String user_id;
 
     ArrayList<Event> eventArrayList;
 
@@ -52,27 +54,21 @@ public class ProfileFragment extends Fragment {
         Intent i = getActivity().getIntent();
         email = i.getStringExtra("email");
         password = i.getStringExtra("password");
-        profileViewModel =
-                ViewModelProviders.of(this).get(ProfileViewModel.class);
+        //profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
-        final TextView textView = root.findViewById(R.id.text_profile);
-        profileViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
-        return root;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        //final TextView textView = root.findViewById(R.id.text_profile);
+//        profileViewModel.getText().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        user_id = sharedPreferences.getString("USER_ID", "");
 
-        recyclerView = (RecyclerView) getActivity().findViewById(R.id.event_recycler_view);
+
+        recyclerView = root.findViewById(R.id.event_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -84,31 +80,28 @@ public class ProfileFragment extends Fragment {
 
         eventArrayList = new ArrayList<Event>();
 
-        Map<String,?> keys = SharedPreferences.getAll();
+        Map<String,?> keys = sharedPreferences.getAll();
 
         for(Map.Entry<String,?> entry : keys.entrySet()){
-            if(entry.getKey().matches(""))
-            Log.d("map values",entry.getKey() + ": " +
-                    entry.getValue().toString());
+            if(entry.getKey().matches("^\\d+$")) {
+                Log.d("map values", entry.getKey() + ": " +
+                        entry.getValue().toString());
+                Event event = new Event(user_id,null);
+                eventArrayList.add(event);
+            }
         }
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter();
+        mAdapter = new MyAdapter(eventArrayList);
         recyclerView.setAdapter(mAdapter);
+
+        return root;
     }
 
-    public class Profile{
-        public String first;
-        public String last;
-        public String city;
-        public Profile(){
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        }
-        public Profile(String first, String last, String city){
-            this.first = first;
-            this.last = last;
-            this.city = city;
-        }
+
     }
-
 }
