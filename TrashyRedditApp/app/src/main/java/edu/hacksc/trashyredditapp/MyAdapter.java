@@ -51,7 +51,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // - replace the contents of the view with that element
         //holder.textView.setText(mDataset[position]);
 
-
+        View view = holder.View;
+        TextView user_id = view.findViewById(R.id.user_id_text);
+        TextView lat_long_text = view.findViewById(R.id.lat_long_text);
+        user_id.setText(mDataset.get(position).user_id);
+        lat_long_text.setText(mDataset.get(position).point.toString());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

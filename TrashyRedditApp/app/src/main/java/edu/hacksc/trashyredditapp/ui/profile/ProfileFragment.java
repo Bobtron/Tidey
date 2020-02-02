@@ -27,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProfileFragment extends Fragment {
 
@@ -72,7 +74,7 @@ public class ProfileFragment extends Fragment {
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -83,10 +85,28 @@ public class ProfileFragment extends Fragment {
         Map<String,?> keys = sharedPreferences.getAll();
 
         for(Map.Entry<String,?> entry : keys.entrySet()){
-            if(entry.getKey().matches("^\\d+$")) {
+            if(entry.getKey().toString().contains("lat/lng:")) {
                 Log.d("map values", entry.getKey() + ": " +
                         entry.getValue().toString());
-                Event event = new Event(user_id,null);
+
+
+
+                Pattern latPtrn = Pattern.compile("\\((-?\\d+\\.\\d+),");
+                Matcher latMtchr = latPtrn.matcher(entry.getKey());
+
+                latMtchr.find();
+
+                double lat = Double.parseDouble(latMtchr.group(1));
+
+                Pattern lngPtrn = Pattern.compile(",(-?\\d+\\.\\d+)\\)");
+                Matcher lngMtchr = lngPtrn.matcher(entry.getKey());
+
+                lngMtchr.find();
+
+                double lng = Double.parseDouble(lngMtchr.group(1));
+
+                LatLng latLng = new LatLng(lat,lng);
+                Event event = new Event(user_id,latLng);
                 eventArrayList.add(event);
             }
         }
