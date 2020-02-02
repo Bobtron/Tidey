@@ -129,7 +129,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         Map<String,?> keys = sharedPreferences.getAll();
-
         for(Map.Entry<String,?> entry : keys.entrySet()){
             if(entry.getKey().toString().contains("lat/lng:")) {
                 Log.d("map values", entry.getKey() + ": " +
@@ -162,18 +161,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
-                String pos = marker.getPosition().toString();
-                String stringID = marker.getId();
-                i.putExtra("location", pos);
-                i.putExtra("stringID", stringID);
-                startActivity(i);
+                if (marker.getTitle().equals("Click here if you would like to create a clean up event")) {
+                    Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+                    String pos = marker.getPosition().toString();
+                    String stringID = marker.getId();
+                    i.putExtra("location", pos);
+                    i.putExtra("stringID", stringID);
+                    startActivity(i);
+                }
             }
         });
 
        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
            @Override
            public boolean onMarkerClick( final Marker marker){
+               marker.setTitle("Click here if you would like to create a clean up event");
+               Log.v("MARKER", marker.getTitle() + " is the marker title");
                marker.showInfoWindow();
                return false;
            }

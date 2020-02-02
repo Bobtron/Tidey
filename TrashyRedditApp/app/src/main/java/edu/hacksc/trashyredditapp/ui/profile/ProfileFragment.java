@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -38,6 +39,8 @@ public class ProfileFragment extends Fragment {
     String last;
     String user_id;
 
+    EditText profileName;
+
     ArrayList<Event> eventArrayList;
 
     public Profile profileRef;
@@ -59,8 +62,11 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         Log.i("OnCreate", "Profile");
 
+        //
+
+
         Intent i = getActivity().getIntent();
-        first= i.getStringExtra("first");
+        first = i.getStringExtra("first");
         last = i.getStringExtra("last");
         email = i.getStringExtra("email");
         password = i.getStringExtra("password");
@@ -86,7 +92,7 @@ public class ProfileFragment extends Fragment {
         user_id = sharedPreferences.getString("USER_ID", "");
 
         recyclerView = root.findViewById(R.id.event_recycler_view);
-        display_top = root.findViewById(R.id.text_profile);
+        //display_top = root.findViewById(R.id.text_profile);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -112,7 +118,7 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        display_top.setText("Hello " + first + "!");
+        //display_top.setText("Hello " + first + "!");
 
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(eventArrayList);
@@ -124,7 +130,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 }

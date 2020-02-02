@@ -1,8 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#D2E6C2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarStyle="outsideOverlay">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif10"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif9"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif8"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif7"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif6"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif5"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif4"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif3"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif2"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif1"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/text_notifications"
