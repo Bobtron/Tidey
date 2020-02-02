@@ -19,146 +19,72 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif10"
                 android:layout_width="match_parent"
-                android:layout_height="98dp"
+                android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none">
-
-                <EditText
-                    android:id="@+id/editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    tools:text="You have 5 event invitations waiting. Let your friends know if you'll be joining their clean-ups!" />
-            </androidx.cardview.widget.CardView>
+                android:outlineProvider="none" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif9"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none" >
-
-                <EditText
-                    android:id="@+id/editText2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:text="Check out some high-demand clean-up spots in your area." />
-            </androidx.cardview.widget.CardView>
+                android:outlineProvider="none" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif8"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none" >
-
-                <EditText
-                    android:id="@+id/editText3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:text="Marina Del Rey Meetup with Jackie and 8 others is happening in 24 hours!" />
-            </androidx.cardview.widget.CardView>
+                android:outlineProvider="none" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif7"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none" >
-
-                <EditText
-                    android:id="@+id/editText4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:text="Justin and 34 others upvoted your pin near Long Beach, California." />
-            </androidx.cardview.widget.CardView>
+                android:outlineProvider="none" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif6"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none" >
-
-                <EditText
-                    android:id="@+id/editText5"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:text='Your event "Friends of the LA River" has finished! Tap here to close your event.' />
-            </androidx.cardview.widget.CardView>
+                android:outlineProvider="none" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif5"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none" >
-
-                <EditText
-                    android:id="@+id/editText6"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:text='Terence Li RSVPed "Going" to your event "Redondo Beach Clean-Up."' />
-            </androidx.cardview.widget.CardView>
+                android:outlineProvider="none" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif4"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none" >
-
-                <EditText
-                    android:id="@+id/editText7"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:text="RSVPs for Rain's event &quot;LA National Forest Beatification&quot; end in 24 hours." />
-            </androidx.cardview.widget.CardView>
+                android:outlineProvider="none" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/notif3"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="5dp"
-                android:outlineProvider="none" >
+                android:outlineProvider="none" />
 
-                <EditText
-                    android:id="@+id/editText8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:text="1175 people have upvoted your pin near Westwood, California." />
-            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif2"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notif1"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="5dp"
+                android:outlineProvider="none" />
 
         </LinearLayout>
     </ScrollView>
