@@ -43,8 +43,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
+import java.util.Random;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , LocationListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , LocationListener, GoogleMap.OnMarkerClickListener {
     //private MapInfoWindowFragment mapInfoWindowFragment;
     private GoogleMap mMap;
     private Marker mMarker;
@@ -224,7 +225,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                    });
                }
                else {
+
                    marker.setTitle("Click here if you would like to create a clean up event");
+
+                   Random random = new Random();
+
+                   if(random.nextDouble() > 0.5){
+                       Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
+                       intent.putExtra("location", marker.getPosition().toString());
+                       intent.putExtra("pinID", "-M-5YALMHfKkjWh9WCaw");
+                       startActivity(intent);
+                   }else{
+                       Intent intent = new Intent(getApplicationContext(), JoinEventActivity.class);
+                       startActivity(intent);
+                   }
                }
 
                Log.v("MARKER", marker.getTitle() + " is the marker title");
@@ -263,6 +277,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     pickConfirm.setOnClickListener(new Button.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             // TODO Auto-generated method stub
                             Log.d("MARKER", "in the yes click listener");
                             pickConfirm.setVisibility(View.INVISIBLE);
@@ -287,6 +302,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mDatabase.child("pins").child(markerID).setValue(pin);
                             mMarker.remove();
                             mMarker = null;
+
 
 
                         }
@@ -368,8 +384,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onProviderDisabled (String provider){
     }
 
-//    @Override
-//    public boolean onMarkerClick( final Marker marker){
+    @Override
+    public boolean onMarkerClick(Marker marker){
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
 //        Log.d("hello", "line reached");
 ////        String result = sharedPreferences.getString(marker.getPosition().toString(), "");
@@ -386,7 +402,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 ////        }
 //
 ////        return false;
-//    }
+//        Random random = new Random();
+//
+//        if(random.nextDouble() > 0.5){
+//            Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
+//            startActivity(intent);
+//        }else{
+//            Intent intent = new Intent(getApplicationContext(), JoinEventActivity.class);
+//            startActivity(intent);
+//        }
+
+        return true;
+    }
 
 
 }

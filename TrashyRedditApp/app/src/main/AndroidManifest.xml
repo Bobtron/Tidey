@@ -42,6 +42,9 @@
             android:name=".CreateEventActivity"
             android:label="@string/title_create_event"/>
         <activity
+            android:name=".JoinEventActivity"
+            android:label="@string/title_join_event"/>
+        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity

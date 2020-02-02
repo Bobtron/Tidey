@@ -68,6 +68,7 @@
         android:layout_marginTop="72dp"
         android:background="#FFFFFF"
         android:foregroundTint="#FFFFFF"
+        android:onClick="goToMain"
         android:text="Join Event"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
