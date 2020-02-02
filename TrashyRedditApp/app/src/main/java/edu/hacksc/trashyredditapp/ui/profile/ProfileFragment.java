@@ -71,12 +71,12 @@ public class ProfileFragment extends Fragment {
         email = i.getStringExtra("email");
         password = i.getStringExtra("password");
 
-        profileRef = new Profile(first, last, email, password);
-
-        myRef.child("Users").child("Login").child("Email").setValue(email);
-        myRef.child("Users").child("Login").child("First").setValue(first);
-        myRef.child("Users").child("Login").child("Last").setValue(last);
-        myRef.child("Users").child("Login").child("Password").setValue(password);
+//        profileRef = new Profile(first, last, email, password);
+//
+//        myRef.child("Users").child("Login").child("Email").setValue(email);
+//        myRef.child("Users").child("Login").child("First").setValue(first);
+//        myRef.child("Users").child("Login").child("Last").setValue(last);
+//        myRef.child("Users").child("Login").child("Password").setValue(password);
 
         //profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);

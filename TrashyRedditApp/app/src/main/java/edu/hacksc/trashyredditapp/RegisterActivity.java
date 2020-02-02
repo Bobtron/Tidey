@@ -7,9 +7,12 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import edu.hacksc.trashyredditapp.ui.profile.Profile;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -24,6 +27,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText last_name;
 
     SharedPreferences sharedPreferences;
+
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         first_name = findViewById(R.id.first_name_text);
         last_name = findViewById(R.id.last_name_text);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     public void onRegister(View view){
@@ -64,6 +71,15 @@ public class RegisterActivity extends AppCompatActivity {
         editor.putString("USER_ID", user.getUid());
         //TODO put whatever else you want
         editor.commit();
+
+        Profile profile = new Profile(first_name_str, last_name_str, email, password);
+
+        String profileId = mDatabase.push().getKey();
+
+
+        mDatabase.child("profiles").child(profileId).setValue(profile);
+
+
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("first", first_name_str);
