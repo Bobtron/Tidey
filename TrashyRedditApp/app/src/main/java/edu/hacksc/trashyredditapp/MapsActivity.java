@@ -249,8 +249,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (result.length() > 0 && result.equals(user_id)) {
             marker.remove();
             editor.remove(marker.getPosition().toString());
+            Intent i = new Intent(getApplicationContext(), CreateEventActivity.class);
+
+            i.putExtra("location", " ");
+
+            startActivity(i);
             return true;
         }
+
         return false;
     }
 }
