@@ -9,6 +9,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,6 +32,8 @@ public class CreateEventActivity extends AppCompatActivity {
     public static String TAG = "I_WANNA_SLEEP";
 
     SharedPreferences sharedPreferences;
+    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class CreateEventActivity extends AppCompatActivity {
         Intent i = getIntent();
         String loc = i.getStringExtra("location");
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         location = findViewById(R.id.loc);
         location.setText("Location: \n" + loc);
         eventNameText = findViewById(R.id.editTextEventName);
@@ -51,6 +57,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), MapsActivity.class);
                 String eventName = eventNameText.getText().toString();
                 i.putExtra("eventName", eventName);
+                String eventID = mDatabase.push().getKey();
                 startActivity(i);
                 Toast.makeText(CreateEventActivity.this, "New Event Saved",
                         Toast.LENGTH_SHORT).show();
