@@ -1,6 +1,5 @@
 package edu.hacksc.trashyredditapp.ui.profile;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.hacksc.trashyredditapp.Event;
@@ -28,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ProfileFragment extends Fragment {
 
@@ -56,20 +51,27 @@ public class ProfileFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    TextView display_top;
+    private DatabaseReference mDatabase;
+
+    TextView profile_name_text;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Log.i("OnCreate", "Profile");
 
         //
+        user_id = sharedPreferences.getString("USER_ID", "");
 
+//        Intent i = getActivity().getIntent();
+//        first = i.getStringExtra("first");
+//        last = i.getStringExtra("last");
+//        email = i.getStringExtra("email");
+//        password = i.getStringExtra("password");
 
-        Intent i = getActivity().getIntent();
-        first = i.getStringExtra("first");
-        last = i.getStringExtra("last");
-        email = i.getStringExtra("email");
-        password = i.getStringExtra("password");
+        first =  mDatabase.child("profiles").child(user_id).child("first");
+        last =  mDatabase.child("profiles").child(user_id).child("last");
+        email =  mDatabase.child("profiles").child(user_id).child("email");
+        password =  mDatabase.child("profiles").child(user_id).child("password");
 
 //        profileRef = new Profile(first, last, email, password);
 //
@@ -88,11 +90,9 @@ public class ProfileFragment extends Fragment {
 //            }
 //        });
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        user_id = sharedPreferences.getString("USER_ID", "");
 
         recyclerView = root.findViewById(R.id.event_recycler_view);
-        //display_top = root.findViewById(R.id.text_profile);
+        profile_name_text = root.findViewById(R.id.profile_name_text);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -118,7 +118,7 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        //display_top.setText("Hello " + first + "!");
+        profile_name_text.setText("Hello " + last + ", " + first + "!");
 
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(eventArrayList);
@@ -130,6 +130,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
     }
 }

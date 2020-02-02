@@ -68,25 +68,25 @@ public class RegisterActivity extends AppCompatActivity {
         String first_name_str = first_name.getText().toString().trim();
         String last_name_str = last_name.getText().toString().trim();
 
+
+
         editor.putString("USER_ID", user.getUid());
         //TODO put whatever else you want
         editor.commit();
 
         Profile profile = new Profile(first_name_str, last_name_str, email, password);
 
-        String profileId = mDatabase.push().getKey();
 
-
-        mDatabase.child("profiles").child(profileId).setValue(profile);
-
+        String user_id = sharedPreferences.getString("USER_ID", "BAD_BAD");
+        mDatabase.child("profiles").child(user_id).setValue(profile);
 
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("first", first_name_str);
-        intent.putExtra("last", last_name_str);
-        //intent.putExtra("database", database);
-        intent.putExtra("email", email);
-        intent.putExtra("password", password);
+//        intent.putExtra("first", first_name_str);
+//        intent.putExtra("last", last_name_str);
+//        //intent.putExtra("database", database);
+//        intent.putExtra("email", email);
+//        intent.putExtra("password", password);
         startActivity(intent);
     }
 
