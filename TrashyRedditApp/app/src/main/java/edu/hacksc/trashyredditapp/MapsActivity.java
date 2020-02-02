@@ -36,6 +36,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Map;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, LocationListener {
      //private MapInfoWindowFragment mapInfoWindowFragment;
         private GoogleMap mMap;
@@ -125,6 +127,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         //mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        Map<String,?> keys = sharedPreferences.getAll();
+
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if(entry.getKey().toString().contains("lat/lng:")) {
+                Log.d("map values", entry.getKey() + ": " +
+                        entry.getValue().toString());
+
+                LatLng latLng = Event.getLatLng(entry.getKey());
+                mMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+
+            }
+        }
 
 
         mMap.setOnMapClickListener(new OnMapClickListener() {

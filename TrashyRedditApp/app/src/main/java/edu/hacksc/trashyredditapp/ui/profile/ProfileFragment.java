@@ -89,23 +89,8 @@ public class ProfileFragment extends Fragment {
                 Log.d("map values", entry.getKey() + ": " +
                         entry.getValue().toString());
 
+                LatLng latLng = Event.getLatLng(entry.getKey());
 
-
-                Pattern latPtrn = Pattern.compile("\\((-?\\d+\\.\\d+),");
-                Matcher latMtchr = latPtrn.matcher(entry.getKey());
-
-                latMtchr.find();
-
-                double lat = Double.parseDouble(latMtchr.group(1));
-
-                Pattern lngPtrn = Pattern.compile(",(-?\\d+\\.\\d+)\\)");
-                Matcher lngMtchr = lngPtrn.matcher(entry.getKey());
-
-                lngMtchr.find();
-
-                double lng = Double.parseDouble(lngMtchr.group(1));
-
-                LatLng latLng = new LatLng(lat,lng);
                 Event event = new Event(user_id,latLng);
                 eventArrayList.add(event);
             }
