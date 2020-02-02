@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -38,6 +39,8 @@ public class ProfileFragment extends Fragment {
     String last;
     String user_id;
 
+    EditText profileName;
+
     ArrayList<Event> eventArrayList;
 
     public Profile profileRef;
@@ -57,8 +60,11 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         Log.i("OnCreate", "Profile");
 
+        //
+
+
         Intent i = getActivity().getIntent();
-        first= i.getStringExtra("first");
+        first = i.getStringExtra("first");
         last = i.getStringExtra("last");
         email = i.getStringExtra("email");
         password = i.getStringExtra("password");
@@ -119,7 +125,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 }
