@@ -19,6 +19,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdate;
+import android.widget.Button;
+import android.widget.Toast;
+
+//import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.gms.location;
@@ -31,37 +35,36 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, LocationListener {
+     //private MapInfoWindowFragment mapInfoWindowFragment;
+        private GoogleMap mMap;
+        private Marker mMarker;
+        String user_id;
 
-    private GoogleMap mMap;
-    private Marker mMarker;
-    String user_id;
+        private LocationManager locationManager;
 
-    private LocationManager locationManager;
+        SharedPreferences sharedPreferences;
 
-    SharedPreferences sharedPreferences;
+        private static final long MIN_TIME = 400;
+        private static final float MIN_DISTANCE = 1000;
 
-    private static final long MIN_TIME = 400;
-    private static final float MIN_DISTANCE = 1000;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            Log.i("hi", "onCreateMapFragment");
 
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.i("hi", "onCreateMapFragment");
+            user_id = sharedPreferences.getString("USER_ID", "");
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            //BottomNavigationView bnv = findViewById(R.id.bnv);
+            //Log.i("hi", bnv.toString());
 
-        user_id = sharedPreferences.getString("USER_ID", "");
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        //BottomNavigationView bnv = findViewById(R.id.bnv);
-        //Log.i("hi", bnv.toString());
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }else {
-            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 //            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 //            if (lastKnownLocation != null) {
 //                updateMap(lastKnownLocation);
@@ -69,17 +72,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            }else{
 //                Log.i(MainActivity.APP_TAG, "THE LAST KNOWN LOCATION IS NULL");
 //            }
+            }
+
+            //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
+
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_maps);
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
         }
-
-         //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
 
 //    public void goToMain(View view){
 //        Log.i("hi", "gotomain");
@@ -87,6 +90,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //        startActivity(intent);
 //    }
+
+
 
 
     /**
@@ -99,20 +104,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
+
     public void onMapReady(GoogleMap googleMap) {
         Log.i("hi", "onMapReady");
-
-
-
-
 
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMarker = mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //        mMap.animateCamera( CameraUpdateFactory.zoomTo( 2.0f ));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.setOnMapClickListener(new OnMapClickListener() {
             @Override
@@ -129,52 +131,85 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("MARKER", "Created Marker");
 //                mMarker.setPosition(point);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+                mMarker = mMap.addMarker(new MarkerOptions().position(point).title("Is this a trash site?"));
+                mMarker.showInfoWindow();
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
 
+                //                mMarker.setPosition(point);
             }
         });
 
-//        @Override
-//        public void onLocationChanged(Location location)
-//        {
-//            if( mListener != null )
-//            {
-//                mListener.onLocationChanged( location );
-//
-//                //Move the camera to the user's location and zoom in!
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
-//            }
-//        }
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            //Default InfoWindow frame
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                final View infoview = getLayoutInflater().inflate(R.layout.activity_maps, null);
+                LatLng latLng = marker.getPosition();
+
+                Button pickMe = infoview.findViewById(R.id.confirmTrashSite);
+                pickMe.setOnClickListener(new Button.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        Toast.makeText(getApplicationContext(), "Requested Send", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                return infoview;
+            }
+        });
+
+        //        @Override
+        //        public void onLocationChanged(Location location)
+        //        {
+        //            if( mListener != null )
+        //            {
+        //                mListener.onLocationChanged( location );
+        //
+        //                //Move the camera to the user's location and zoom in!
+        //                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
+        //            }
+        //        }
     }
+            @Override
+            public void onLocationChanged (Location location){
+                if (mMap != null) {
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+                    mMap.animateCamera(cameraUpdate);
+                    locationManager.removeUpdates(this);
+                }
+            }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        if(mMap != null) {
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
-            mMap.animateCamera(cameraUpdate);
-            locationManager.removeUpdates(this);
-        }
-    }
+            @Override
+            public void onStatusChanged (String provider,int status, Bundle extras){
+            }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
+            @Override
+            public void onProviderEnabled (String provider){
+            }
 
-    @Override
-    public void onProviderEnabled(String provider) { }
+            @Override
+            public void onProviderDisabled (String provider){
+            }
 
-    @Override
-    public void onProviderDisabled(String provider) { }
+            @Override
+            public boolean onMarkerClick( final Marker marker){
+                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-
-    @Override
-    public boolean onMarkerClick(final Marker marker) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        String result = sharedPreferences.getString(marker.getPosition().toString(), "");
-        if(result.length() > 0 && result.equals(user_id)){
-            marker.remove();
-            return true;
-        }
-        return false;
-    }
+                String result = sharedPreferences.getString(marker.getPosition().toString(), "");
+                if (result.length() > 0 && result.equals(user_id)) {
+                    marker.remove();
+                    return true;
+                }
+                return false;
+            }
 }
+
