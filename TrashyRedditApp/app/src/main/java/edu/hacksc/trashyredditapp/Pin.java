@@ -13,12 +13,13 @@ public class Pin {
     public String latitude;
     public String longitude;
     public String eventID; //eventID will be null for a marker with no event
-    public String userFirstName; //first name of user who created the marker
+    public String userFirstName;
+    public String userID; //should never be null
 
     public Pin() {
     }
 
-    public Pin(String title, /*LatLng location*/ String latitude, String longitude, String eventID, String userFirstName) {
+    public Pin(String title, /*LatLng location*/ String latitude, String longitude, String eventID, String userFirstName, String userID) {
 //        this.pinID = pinID;
         this.title = title;
         //this.location = location;
@@ -26,5 +27,6 @@ public class Pin {
         this.longitude = longitude;
         this.eventID = eventID;
         this.userFirstName = userFirstName;
+        this.userID = userID;
     }
 }

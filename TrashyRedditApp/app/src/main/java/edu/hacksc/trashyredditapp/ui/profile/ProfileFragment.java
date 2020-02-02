@@ -129,6 +129,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
 //        first =  mDatabase.child("profiles").child(user_id).child("first");
 //        last =  mDatabase.child("profiles").child(user_id).child("last");
 //        email =  mDatabase.child("profiles").child(user_id).child("email");
