@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-            FirebaseDatabase.getInstance().getReference("markers");
+            FirebaseDatabase.getInstance().getReference("pins");
             user_id = sharedPreferences.getString("USER_ID", "");
 
             //BottomNavigationView bnv = findViewById(R.id.bnv);
@@ -171,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String pos = marker.getPosition().toString();
                     String stringID = marker.getId();
                     i.putExtra("location", pos);
-                    i.putExtra("stringID", stringID);
+                    //i.putExtra("pinID", pinID);
                     startActivity(i);
                 }
             }
@@ -219,16 +219,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void onClick(View v) {
                             // TODO Auto-generated method stub
+                            Log.d("MARKER", "in the yes click listener");
                             pickConfirm.setVisibility(View.INVISIBLE);
                             pickReject.setVisibility(View.INVISIBLE);
                             mMarker.setTitle("Click here if you would like to create a clean up event");
                             mMarker.hideInfoWindow();
+                            //String pinID = mDatabase.push().getKey();
+                            Log.d("MARKER", mMarker.getTitle() + "is the title");
+                            Log.d("MARKER", mMarker.getPosition() + "is the location");
+                            Pin pin = new Pin(mMarker.getTitle(), mMarker.getPosition(), null, user_id);
+                            mDatabase.child("pins").child("test").setValue(pin);
                             Toast.makeText(getApplicationContext(), "Successfully created a trash site", Toast.LENGTH_SHORT).show();
                             mMarker = null;
-
-                            String markerID = mDatabase.push().getKey();
-                            Pin pin = new Pin(mMarker.getTitle(), mMarker.getPosition(), null);
-                            mDatabase.child(markerID).setValue(pin);
 
                         }
                     });

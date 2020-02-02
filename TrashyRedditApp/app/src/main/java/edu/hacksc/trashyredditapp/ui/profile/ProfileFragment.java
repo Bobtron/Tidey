@@ -68,10 +68,10 @@ public class ProfileFragment extends Fragment {
 //        email = i.getStringExtra("email");
 //        password = i.getStringExtra("password");
 
-        first =  mDatabase.child("profiles").child(user_id).child("first");
-        last =  mDatabase.child("profiles").child(user_id).child("last");
-        email =  mDatabase.child("profiles").child(user_id).child("email");
-        password =  mDatabase.child("profiles").child(user_id).child("password");
+//        first =  mDatabase.child("profiles").child(user_id).child("first");
+//        last =  mDatabase.child("profiles").child(user_id).child("last");
+//        email =  mDatabase.child("profiles").child(user_id).child("email");
+//        password =  mDatabase.child("profiles").child(user_id).child("password");
 
 //        profileRef = new Profile(first, last, email, password);
 //
