@@ -1,36 +1,46 @@
 package edu.hacksc.trashyredditapp.ui.profile;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.hacksc.trashyredditapp.Event;
-import edu.hacksc.trashyredditapp.LoginActivity;
 import edu.hacksc.trashyredditapp.MyAdapter;
-import edu.hacksc.trashyredditapp.Pin;
 import edu.hacksc.trashyredditapp.R;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProfileFragment extends Fragment {
 
@@ -45,6 +55,7 @@ public class ProfileFragment extends Fragment {
     ArrayList<Event> eventArrayList;
 
     public Profile profileRef;
+    public static final int GET_FROM_GALLERY = 1;
 
     SharedPreferences sharedPreferences;
 
@@ -57,86 +68,20 @@ public class ProfileFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private DatabaseReference mDatabase;
+    private Button button;
 
-    TextView profile_name_text;
+
+    TextView display_top;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Log.i("OnCreate", "Profile");
 
-        //
-        user_id = sharedPreferences.getString("USER_ID", "");
-
-//        Intent i = getActivity().getIntent();
-//        first = i.getStringExtra("first");
-//        last = i.getStringExtra("last");
-//        email = i.getStringExtra("email");
-//        password = i.getStringExtra("password");
-
-        DatabaseReference currUser = mDatabase.child("profiles").child(user_id);
-
-        currUser.child("first").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                first = dataSnapshot.getValue(String.class);
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("first", first);
-                editor.commit();
-
-                profile_name_text.setText("Hello " + last + ", " + first + "!");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        currUser.child("last").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                last = dataSnapshot.getValue(String.class);
-
-                profile_name_text.setText("Hello " + last + ", " + first + "!");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        currUser.child("email").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                email = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        currUser.child("password").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                password = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-//        first =  mDatabase.child("profiles").child(user_id).child("first");
-//        last =  mDatabase.child("profiles").child(user_id).child("last");
-//        email =  mDatabase.child("profiles").child(user_id).child("email");
-//        password =  mDatabase.child("profiles").child(user_id).child("password");
+        Intent i = getActivity().getIntent();
+        first = i.getStringExtra("first");
+        last = i.getStringExtra("last");
+        email = i.getStringExtra("email");
+        password = i.getStringExtra("password");
 
 //        profileRef = new Profile(first, last, email, password);
 //
@@ -156,8 +101,13 @@ public class ProfileFragment extends Fragment {
 //        });
 
 
+
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        user_id = sharedPreferences.getString("USER_ID", "");
+
         recyclerView = root.findViewById(R.id.event_recycler_view);
-        profile_name_text = root.findViewById(R.id.profile_name_text);
+        //display_top = root.findViewById(R.id.text_profile);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -169,30 +119,23 @@ public class ProfileFragment extends Fragment {
 
         eventArrayList = new ArrayList<Event>();
 
+        Map<String,?> keys = sharedPreferences.getAll();
 
-        mDatabase.child("pins").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if(entry.getKey().toString().contains("lat/lng:")) {
+                Log.d("map values", entry.getKey() + ": " +
+                        entry.getValue().toString());
 
-                for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    Pin pin = data.getValue(Pin.class);
-                    Log.d(LoginActivity.TAG, "here " + pin.latitude);
-                    Event event = new Event(pin.title, pin.latitude, pin.longitude, pin.userFirstName, 3, 4, 5, pin.title);
-//                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(pin.latitude), Double.parseDouble(pin.longitude))).title("Is this a trash site?"));
-                    eventArrayList.add(event);
-                }
-                // specify an adapter (see also next example)
+                LatLng latLng = Event.GetLatLng(entry.getKey());
 
+                Event event = new Event(user_id,latLng);
+                eventArrayList.add(event);
             }
+        }
 
+        //display_top.setText("Hello " + first + "!");
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(LoginActivity.TAG, "Failed to read value.", error.toException());
-            }
-        });
-
+        // specify an adapter (see also next example)
         mAdapter = new MyAdapter(eventArrayList);
         recyclerView.setAdapter(mAdapter);
 
@@ -203,8 +146,9 @@ public class ProfileFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+    }
+
+
 
     }
-}
+
