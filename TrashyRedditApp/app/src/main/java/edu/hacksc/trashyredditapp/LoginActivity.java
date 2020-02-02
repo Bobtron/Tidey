@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import edu.hacksc.trashyredditapp.ui.profile.ProfileFragment;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -32,6 +33,10 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
+    //public FirebaseDatabase database = FirebaseDatabase.getInstance();
+    //public DatabaseReference myRef = database.getReference();
+
+    //myRef.setValue("Hello, World!");
 
     public void updateUI(FirebaseUser user){
         if(user != null){
@@ -41,7 +46,9 @@ public class LoginActivity extends AppCompatActivity {
             editor.commit();
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            //intent.putExtra("database", database);
             startActivity(intent);
+
         }
     }
 
@@ -84,10 +91,15 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.i(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = new Intent(getApplicationContext(), ProfileFragment.class);
+                            intent.putExtra("email", email_text.toString());
+                            intent.putExtra("password", password_text.toString());
                             updateUI(user);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.i(TAG, "createUserWithEmail:failure", task.getException());
@@ -97,6 +109,13 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         // ...
+                        //Map<String, Object> behavior = new HashMap<>();
+                        //behavior.put("Likes: ", "");
+                        //behavior.put("Current Events: ", "");
+
+                        //database.collection("Users").document(email).set(behavior);
+                        //DatabaseReference myRef = database.getReference("Users");
+                        //myRef.setValue("hello world!");
                     }
                 });
     }
@@ -120,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         // ...
+
                     }
                 });
     }

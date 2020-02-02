@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1094300891042-ua38hvtqq4tfcjocltr5e80cact62kb1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.hacksc.trashyredditapp",
+            "certificate_hash": "782c490fb64bf6d4613c483a8a3c3a0189111428"
+          }
+        },
+        {
+          "client_id": "1094300891042-4odei3gdaup235nbhrni2v07qoudh0mg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.hacksc.trashyredditapp",
+            "certificate_hash": "d59e1f5e123bf80a2b37a337c83962f57ea972b5"
+          }
+        },
+        {
           "client_id": "1094300891042-2h8p6fqgvs2oh8p60g7anskqvkgl2gip.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
